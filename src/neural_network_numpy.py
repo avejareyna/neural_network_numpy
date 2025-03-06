@@ -6,10 +6,10 @@ from sklearn.datasets import make_gaussian_quantiles
 def create_dataset(N=1000):
     """
     Genera un conjunto de datos sintético con dos clases usando distribuciones gaussianas.
-    
+
     Parámetros:
     N (int): Número de muestras a generar.
-    
+
     Retorna:
     X (numpy.ndarray): Matriz de características.
     Y (numpy.ndarray): Vector de etiquetas con valores 0 o 1.
@@ -31,11 +31,11 @@ def create_dataset(N=1000):
 def sigmoid(x, derivate=False):
     """
     Función de activación sigmoide.
-    
+
     Parámetros:
     x (numpy.ndarray): Entrada a la función de activación.
     derivate (bool): Si es True, calcula la derivada de la función sigmoide.
-    
+
     Retorna:
     numpy.ndarray: Salida de la sigmoide o su derivada.
     """
@@ -47,11 +47,11 @@ def sigmoid(x, derivate=False):
 def relu(x, derivate=False):
     """
     Función de activación ReLU.
-    
+
     Parámetros:
     x (numpy.ndarray): Entrada a la función de activación.
     derivate (bool): Si es True, calcula la derivada de la función ReLU.
-    
+
     Retorna:
     numpy.ndarray: Salida de la ReLU o su derivada.
     """
@@ -66,12 +66,12 @@ def relu(x, derivate=False):
 def mse(y, y_hat, derivate=False):
     """
     Calcula el error cuadrático medio (MSE).
-    
+
     Parámetros:
     y (numpy.ndarray): Valores reales.
     y_hat (numpy.ndarray): Predicciones.
     derivate (bool): Si es True, calcula la derivada del MSE.
-    
+
     Retorna:
     float o numpy.ndarray: Valor del error o su derivada.
     """
@@ -84,10 +84,10 @@ def mse(y, y_hat, derivate=False):
 def initialize_parameters_deep(layers_dims):
     """
     Inicializa los pesos y sesgos de la red neuronal.
-    
+
     Parámetros:
     layers_dims (list): Lista con el número de neuronas en cada capa.
-    
+
     Retorna:
     dict: Diccionario con los parámetros de la red (pesos y sesgos).
     """
@@ -102,14 +102,14 @@ def initialize_parameters_deep(layers_dims):
 def train(x_data, y_data, learning_rate, params, training=True):
     """
     Propagación hacia adelante y hacia atrás para el entrenamiento de la red neuronal.
-    
+
     Parámetros:
     x_data (numpy.ndarray): Datos de entrada.
     y_data (numpy.ndarray): Etiquetas reales.
     learning_rate (float): Tasa de aprendizaje.
     params (dict): Diccionario con los parámetros de la red.
     training (bool): Si es True, realiza el ajuste de pesos y sesgos.
-    
+
     Retorna:
     numpy.ndarray: Salida de la red neuronal.
     """
@@ -149,6 +149,9 @@ def train(x_data, y_data, learning_rate, params, training=True):
 
     return output
 
+
+
+
 # Función principal para entrenar el modelo
 def train_model():
     """
@@ -165,6 +168,14 @@ def train_model():
             print(mse(Y, output))
             error.append(mse(Y, output))
 
-    # Graficar los datos
-    plt.scatter(X[:, 0], X[:, 1], c=Y, s=40, cmap=plt.cm.Spectral)
+
+    data_test_x = (np.random.rand(1000,2)*2)-1
+    data_test_y = train(data_test_x,X, 0.0001, params, training=False)
+
+    y = np.where(data_test_y>0.5,1,0)
+
+    plt.scatter(data_test_x[:, 0], data_test_x[:, 1], c=y, s=40, cmap=plt.cm.Spectral)
+
+    plt.figure()
+    plt.plot(error)
     plt.show()
